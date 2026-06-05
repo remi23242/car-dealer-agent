@@ -29,7 +29,14 @@ venv/
 
 # logs
 *.log
+*.txt
 logs/
+uvicorn_out*.txt
+uvicorn_stderr.txt
+uvicorn_stdout.txt
+
+# local dev artifacts
+CLAUDE.original.md
 
 # os
 .DS_Store
