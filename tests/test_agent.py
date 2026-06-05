@@ -116,16 +116,17 @@ async def test_book_appointment_intent() -> None:
 
 
 @pytest.mark.asyncio
-async def test_book_appointment_interrupts_before_calendar() -> None:
-    """Graph pauses at interrupt_before=calendar_node — final_response is None."""
-    config = {"configurable": {"thread_id": "conv3-book-interrupt"}}
+async def test_book_appointment_offers_slots() -> None:
+    """Turn 1 booking request — graph runs calendar_node, offers available slots."""
+    config = {"configurable": {"thread_id": "conv3-book-slots"}}
     result = await graph.ainvoke(
         {"messages": [HumanMessage(content="I want to schedule a test drive for Saturday")]},
         config=config,
     )
-    # graph interrupted — calendar_node has not run, so no meeting_link
+    # step 1 ran — slots offered, no booking yet
     assert result.get("meeting_link") is None
-    assert result.get("final_response") is None
+    assert result.get("available_slots"), "Expected available_slots to be populated"
+    assert result.get("final_response") is not None
 
 
 @pytest.mark.asyncio

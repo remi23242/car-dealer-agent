@@ -70,32 +70,29 @@ async def test_full_booking_flow(g, mock_router_llm):
             config=thread,
         )
         assert r2.get("selected_slot") == FAKE_SLOTS[0]["iso"]
-        assert "email" in (r2.get("final_response") or "").lower()
+        assert "name" in (r2.get("final_response") or "").lower()
 
-        # ── turn 3: provide email → book + confirm + remind ───────────────────
+        # ── turn 3: provide name → book with dealership email ─────────────────
         r3 = await g.ainvoke(
-            {"messages": [HumanMessage(content="Send it to test@example.com")]},
+            {"messages": [HumanMessage(content="My name is John Smith")]},
             config=thread,
         )
-        assert r3.get("user_email") == "test@example.com"
+        assert r3.get("customer_name") == "John Smith"
         assert r3.get("meeting_link") == FAKE_BOOKING["meet_link"]
         assert "booked" in (r3.get("final_response") or "").lower()
 
-        mock_book.assert_called_once_with(
-            slot_iso=FAKE_SLOTS[0]["iso"],
-            customer_name="Valued Customer",
-            customer_email="test@example.com",
-        )
+        mock_book.assert_called_once()
+        book_kw = mock_book.call_args.kwargs
+        assert book_kw["slot_iso"] == FAKE_SLOTS[0]["iso"]
+        assert book_kw["customer_name"] == "John Smith"
 
         mock_email.assert_called_once()
         email_kw = mock_email.call_args.kwargs
-        assert email_kw["to_email"] == "test@example.com"
         assert email_kw["meet_link"] == FAKE_BOOKING["meet_link"]
         assert email_kw["slot"] == FAKE_BOOKING["slot"]
 
         mock_sched.assert_called_once()
         sched_kw = mock_sched.call_args.kwargs
-        assert sched_kw["customer_email"] == "test@example.com"
         assert sched_kw["meet_link"] == FAKE_BOOKING["meet_link"]
         assert sched_kw["meeting_iso"] == FAKE_SLOTS[0]["iso"]
 
@@ -138,9 +135,9 @@ async def test_slot_not_matched_reprompts(g, mock_router_llm):
         assert "Monday June 9" in (r2.get("final_response") or "")
 
 
-async def test_invalid_email_reprompts(g, mock_router_llm):
-    """Non-email text at email step → agent reprompts."""
-    thread = {"configurable": {"thread_id": "test-bad-email"}}
+async def test_invalid_name_reprompts(g, mock_router_llm):
+    """Too-long text at name step → _extract_name returns None → agent reprompts."""
+    thread = {"configurable": {"thread_id": "test-bad-name"}}
 
     with patch("agent.router._get_llm", return_value=mock_router_llm), \
          patch.object(cal_module._calendar, "get_free_slots", new_callable=AsyncMock) as mock_slots:
@@ -155,9 +152,10 @@ async def test_invalid_email_reprompts(g, mock_router_llm):
             {"messages": [HumanMessage(content="first one")]},
             config=thread,
         )
+        # >5 words → _extract_name returns None → reprompt
         r3 = await g.ainvoke(
-            {"messages": [HumanMessage(content="I dunno")]},
+            {"messages": [HumanMessage(content="I am not really sure what to put")]},
             config=thread,
         )
-        assert r3.get("user_email") is None
-        assert "email" in (r3.get("final_response") or "").lower()
+        assert r3.get("customer_name") is None
+        assert "name" in (r3.get("final_response") or "").lower()

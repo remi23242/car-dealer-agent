@@ -131,20 +131,20 @@ def _cache_key(p: SearchParams) -> str:
     return f"{p.query}|{p.make}|{p.min_price}|{p.max_price}|{p.year}|{p.vehicle_style}"
 
 
-def _cache_get(key: str) -> str | None:
+def _cache_get(key: str) -> tuple[str, str] | None:
     if key not in _ANSWER_CACHE:
         return None
     _ANSWER_CACHE.move_to_end(key)
     return _ANSWER_CACHE[key]
 
 
-def _cache_put(key: str, answer: str) -> None:
+def _cache_put(key: str, answer: str, context: str) -> None:
     if key in _ANSWER_CACHE:
         _ANSWER_CACHE.move_to_end(key)
     else:
         if len(_ANSWER_CACHE) >= _CACHE_MAX:
             _ANSWER_CACHE.popitem(last=False)
-    _ANSWER_CACHE[key] = answer
+    _ANSWER_CACHE[key] = (answer, context)
 
 
 # ── synthesis ─────────────────────────────────────────────────────────────────
@@ -217,11 +217,12 @@ async def rag_node(state: AgentState) -> dict:
     key = _cache_key(params)
     cached = _cache_get(key)
     if cached:
+        answer, context = cached
         log.info("rag_node.cache_hit", query=params.query)
         return {
-            "rag_context": "[cached]",
-            "messages": [AIMessage(content=cached)],
-            "final_response": cached,
+            "rag_context": context,
+            "messages": [AIMessage(content=answer)],
+            "final_response": answer,
         }
 
     # Prepend vehicle_style so vector search is anchored to the body type.
@@ -260,7 +261,7 @@ async def rag_node(state: AgentState) -> dict:
     answer = await _synthesize(user_text, context)
     log.info("timing.synth_done", ms=round((time.monotonic() - t0) * 1000), chars=len(answer))
 
-    _cache_put(key, answer)
+    _cache_put(key, answer, context)
 
     return {
         "rag_context": context,
