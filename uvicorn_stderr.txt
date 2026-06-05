@@ -1,0 +1,13 @@
+INFO:     Will watch for changes in these directories: ['C:\\Users\\shoai\\OneDrive\\Desktop\\rag project\\car-dealer-agent']
+C:\Users\shoai\OneDrive\Desktop\rag project\car-dealer-agent\.venv\Lib\site-packages\langchain_core\utils\pydantic.py:41: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
+  from pydantic.v1 import BaseModel as BaseModelV1
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [21896] using WatchFiles
+C:\Users\shoai\OneDrive\Desktop\rag project\car-dealer-agent\.venv\Lib\site-packages\langchain_core\utils\pydantic.py:41: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
+  from pydantic.v1 import BaseModel as BaseModelV1
+INFO:     Started server process [11564]
+INFO:     Waiting for application startup.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|##########| 199/199 [00:00<00:00, 3450.30it/s]
+INFO:     Application startup complete.
+allow_interruptions, min_interruption_duration, min_interruption_words are deprecated and will be removed in v2.0. Use turn_handling=TurnHandlingOptions(...) instead

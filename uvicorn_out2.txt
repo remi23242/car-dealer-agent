@@ -1,0 +1,24 @@
+C:\Users\shoai\OneDrive\Desktop\rag project\car-dealer-agent\.venv\Lib\site-packages\langchain_core\utils\pydantic.py:41: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
+  from pydantic.v1 import BaseModel as BaseModelV1
+INFO:     Started server process [19100]
+INFO:     Waiting for application startup.
+2026-06-03 12:17:43 [info     ] livekit.worker_started         url=wss://car-dealer-qgawssc9.livekit.cloud
+
+  LiveKit Playground: https://agents-playground.livekit.io/#token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZGV2LWZmNzNhZSIsInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJyb29tIjoiY2FyLWRlYWxlciIsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWV9LCJzdWIiOiJkZXYtZmY3M2FlIiwiaXNzIjoiQVBJV3dQZTZ0QWhVdHBxIiwibmJmIjoxNzgwNDcxMDYzLCJleHAiOjE3ODA0ODU0NjN9.a0FiXo18t6lM3pae0HgFINAYX-2hpogQ2jT2ZDBOgMM
+
+2026-06-03 12:17:43 [info     ] route.registered               route='GET     /'
+2026-06-03 12:17:43 [info     ] route.registered               route='GET     /docs'
+2026-06-03 12:17:43 [info     ] route.registered               route='GET     /docs/oauth2-redirect'
+2026-06-03 12:17:43 [info     ] route.registered               route='GET     /health'
+2026-06-03 12:17:43 [info     ] route.registered               route='GET     /livekit-token'
+2026-06-03 12:17:43 [info     ] route.registered               route='GET     /openapi.json'
+2026-06-03 12:17:43 [info     ] route.registered               route='GET     /redoc'
+2026-06-03 12:17:43 [info     ] route.registered               route='GET     /token'
+2026-06-03 12:17:43 [info     ] route.registered               route='POST    /chat'
+2026-06-03 12:17:43 [info     ] route.registered               route='POST    /chat/resume'
+2026-06-03 12:17:43 [info     ] route.registered               route='WS      /call'
+INFO:     Application startup complete.
+ERROR:    [Errno 10048] error while attempting to bind on address ('127.0.0.1', 8000): [winerror 10048] only one usage of each socket address (protocol/network address/port) is normally permitted
+INFO:     Waiting for application shutdown.
+2026-06-03 12:17:43 [info     ] livekit.worker_stopped
+INFO:     Application shutdown complete.

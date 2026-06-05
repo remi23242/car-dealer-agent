@@ -1,0 +1,43 @@
+# secrets
+.env
+credentials.json
+token.json
+
+# vector db (regenerate with ingest.py)
+rag/chroma_db/
+
+# raw data (redownload with kaggle)
+rag/data/
+*.csv
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.python-version
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.pytest_cache/
+
+# livekit / google auth
+*.json
+!.env.example
+
+# logs
+*.log
+logs/
+
+# os
+.DS_Store
+Thumbs.db
+
+# ide
+.vscode/
+.idea/
+
+# scheduler
+jobs.sqlite
